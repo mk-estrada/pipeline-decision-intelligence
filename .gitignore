@@ -12,13 +12,17 @@ env/
 # Jupyter
 .ipynb_checkpoints
 
-# Data
+# Data (raw datasets should not be committed)
 data/raw/
+data/interim/
 data/processed/
 
-# OS
+# OS files
 .DS_Store
 Thumbs.db
 
 # VS Code
 .vscode/
+
+# Logs
+*.log
