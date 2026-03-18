@@ -8,6 +8,7 @@ __pycache__/
 .venv/
 venv/
 env/
+.env
 
 # Jupyter
 .ipynb_checkpoints
@@ -16,6 +17,10 @@ env/
 data/raw/
 data/interim/
 data/processed/
+
+#Output figures to and tables to reduce clutter
+outputs/figures/
+outputs/tables/
 
 # OS files
 .DS_Store

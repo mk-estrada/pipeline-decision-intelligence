@@ -1,4 +1,4 @@
-# Decision Intelligence: Revenue Forecasting System
+# Decision Intelligence System for Revenue Forecasting
 
 ## Executive Summary
 
