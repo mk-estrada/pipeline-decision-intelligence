@@ -15,7 +15,6 @@
 | regional_office | str | 0 | 0.0 | 3 |
 
 ## Notes
-## Notes
 - `sales_agent` appears to be the practical business key for this table.
 - This table functions as a dimension table describing the sales organization at the agent level.
 - `manager` and `regional_office` define a hierarchical grouping (agent → manager → region) that can support aggregation and performance analysis.
