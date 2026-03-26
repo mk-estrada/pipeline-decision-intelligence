@@ -2,6 +2,5 @@ pandas
 numpy
 jupyter
 pyarrow
-snowflake-connector-python
 python-dotenv
-pandas
+snowflake-connector-python[pandas]

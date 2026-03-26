@@ -89,6 +89,12 @@ before being used in downstream analytics, forecasting, and decision intelligenc
 
 This design mirrors modern analytics engineering practices, where data quality is enforced early in the pipeline before transformation and modeling.
 
+## RAW tables
+accounts.csv -> accounts_raw
+products.csv -> products_raw
+sales_pipeline.csv -> sales_pipeline_raw
+sales_teams.csv -> sales_teams_raw
+
 ## Technology Stack
 
 Python  
