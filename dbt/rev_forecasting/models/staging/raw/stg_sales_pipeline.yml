@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: stg_sales_pipeline
+    description: "Staging model for raw sales pipeline reference data."
+
+    columns:
+      - name: opportunity_id
+        description: "Name of the product."
+        tests:
+          - not_null
+          - unique
+
+      - name: sales_agent_name
+        description: "Sales agent for the opportunity."
+
+      - name: product_name
+        description: "Product for the opportunity."
+      
+      - name: account_name
+        description: "Account or business for the opportunity."
+
+      - name: deal_stage
+        description: "Stage of the opportunity."
+        tests: 
+          - not_null
+
+      - name: engage_date
+        description: "Date in which the opportunity began."
+
+      - name: close_date
+        description: "Closing date for the opportunity."
+
+      - name: close_value_amount
+        description: "Closing value for the opportunity."

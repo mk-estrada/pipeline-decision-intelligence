@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: stg_sales_teams
+    description: "Staging model for raw sales team reference data."
+
+    columns:
+      - name: sales_agent_name
+        description: "Name of the sales agent."
+        tests:
+          - not_null
+
+      - name: manager_name
+        description: "Manager associated with the sales agent."
+
+      - name: regional_office
+        description: "Regional office associated with the sales team record."

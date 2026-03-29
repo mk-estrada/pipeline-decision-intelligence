@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: stg_products
+    description: "Staging model for raw products reference data."
+
+    columns:
+      - name: product_name
+        description: "Name of the product."
+        tests:
+          - not_null
+
+      - name: series
+        description: "Series identifier for the product."
+
+      - name: sales_price
+        description: "Sales price of the product."

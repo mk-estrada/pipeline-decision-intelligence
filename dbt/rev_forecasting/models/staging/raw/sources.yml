@@ -1,0 +1,31 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Raw landed source tables loaded from cleaned interim CSV files into Snowflake."
+    database: REV_FORECASTING
+    schema: RAW
+    tables:
+      - name: sales_teams_raw
+        identifier: sales_teams_raw
+        quoting:
+          identifier: true
+        description: "Raw sales team/user reference data loaded from interim CSV."
+
+      - name: accounts_raw
+        identifier: accounts_raw
+        quoting:
+          identifier: true
+        description: "Raw account/customer reference data loaded from interim CSV."
+
+      - name: products_raw
+        identifier: products_raw
+        quoting:
+          identifier: true
+        description: "Raw product reference data loaded from interim CSV."
+
+      - name: sales_pipeline_raw
+        identifier: sales_pipeline_raw
+        quoting:
+          identifier: true
+        description: "Raw sales opportunity/pipeline fact-like data loaded from interim CSV."

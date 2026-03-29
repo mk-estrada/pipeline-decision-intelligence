@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: stg_accounts
+    description: "Staging model for raw accounts reference data."
+
+    columns:
+      - name: account_name
+        description: "Name of the account."
+        tests:
+          - not_null
+
+      - name: sector
+        description: "Sector type for the account"
+
+      - name: year_established
+        description: "Year the account company was established."
+
+      - name: revenue
+        description: "Revenue of the account company."
+
+      - name: employee_count
+        description: "Number of employees in the account company."
+
+      - name: office_location
+        description: "Location of account company."
+
+      - name: subsidiary_of
+        description: "Subsidiary of account company, if relevant."
