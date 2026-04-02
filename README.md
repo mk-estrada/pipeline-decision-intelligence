@@ -6,6 +6,14 @@ This project simulates a decision intelligence system designed to improve revenu
 
 Rather than focusing only on predictive modeling, the project evaluates the operational drivers of pipeline performance and provides actionable recommendations to improve forecast reliability.
 
+### Executive Summary: Pipeline Performance
+
+The pipeline is currently weighted toward historical activity, with approximately 80% of opportunities already closed and only 20% remaining open. Despite this, conversion performance is strong, with a win rate of ~63%, indicating an effective sales motion once deals reach closure.
+
+From a value perspective, the pipeline is driven primarily by high-volume, lower-value deals, with limited contribution from large opportunities. To date, the business has generated approximately $1M in won revenue, while the current open pipeline represents ~$3.3M in potential value. If historical conversion rates hold, this suggests an additional ~$2M in expected revenue, effectively doubling realized performance.
+
+However, there is a notable disconnect between sales velocity and pipeline aging. While closed deals move efficiently, with an average cycle time of ~50 days, open opportunities have an average age of nearly 200 days. This gap suggests a portion of the pipeline may be stalled or lower quality, representing an opportunity for improved pipeline management, qualification, or prioritization.
+
 ## Business Problem
 
 Organizations often struggle to forecast revenue accurately due to inconsistent pipeline progression and limited visibility into deal conversion patterns.
@@ -97,9 +105,33 @@ sales_teams.csv -> sales_teams_raw
 
 ## Technology Stack
 
-Python  
+Python (pandas) 
 SQL  
 Snowflake  
 dbt  
 scikit-learn  
 Plotly / dashboards
+
+
+## Data Architecture
+
+staging → intermediate → marts
+
+- staging: cleaned source data
+- intermediate: enriched opportunity-level model
+- marts: decision-ready metrics and analytics
+
+## Key Models
+
+### int_sales_pipeline_enriched
+Canonical opportunity-level dataset with lifecycle, timing, and enrichment fields.
+
+### mart_pipeline_summary
+Executive KPI layer summarizing pipeline performance, conversion, value, and velocity.
+
+## Key Metrics
+
+- Win Rate = Won / Closed Opportunities
+- Estimated Open Pipeline Value = proxy using sales price and available deal values
+- Avg Sales Cycle = avg days from engage to close (closed deals)
+- Avg Open Deal Age = age of open deals as of dataset analysis date
