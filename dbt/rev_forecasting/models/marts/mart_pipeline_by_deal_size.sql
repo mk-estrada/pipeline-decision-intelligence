@@ -1,6 +1,12 @@
 -- mart_pipeline_by_deal_size
 -- Purpose: Compare pipeline performance and health across estimated deal size segments
 -- Grain: 1 row per estimated_deal_size_band
+-- 
+-- Key Insights: Small deals drive pipeline volume and day-to-day sales activity.
+-- Medium deals appear to offer the best mix of value, conversion, and efficiency.
+-- Large deals contribute outsized revenue potential but are slower and less predictable.
+-- Pipeline aging is elevated across all deal sizes, reducing confidence in headline open pipeline value.
+-- Unknown deal-size classification weakens segment-level visibility and forecast precision.
 
 select 
     coalesce(epipeline.estimated_deal_size_band, 'unknown') as estimated_deal_size_band,
