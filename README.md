@@ -135,3 +135,110 @@ Executive KPI layer summarizing pipeline performance, conversion, value, and vel
 - Estimated Open Pipeline Value = proxy using sales price and available deal values
 - Avg Sales Cycle = avg days from engage to close (closed deals)
 - Avg Open Deal Age = age of open deals as of dataset analysis date
+
+## Executive Summary (Pipeline)
+- The pipeline reflects strong historical performance (≈60%+ win rate, ~48-day sales cycle), but current pipeline quality is materially weaker, with over $1.3M in aged or stalled opportunities and average open deal age (~198 days) far exceeding typical cycle times.
+- As a result, headline pipeline value likely overstates near-term revenue potential, since a significant portion of open opportunities may not be actively progressing or realistically convertible.
+- Pipeline risk is driven less by conversion performance and more by pipeline quality and data integrity, with over half of open opportunities classified as stale or unknown and gaps in key deal-level fields limiting visibility.
+- These risks are not evenly distributed—they are concentrated in specific regions (e.g., West aging, Central data gaps) and segments (e.g., small deal volume, large deal unpredictability), indicating that targeted interventions will be more effective than broad process changes.
+- The pipeline reflects distinct commercial motions across deal sizes, requiring a segmented approach to forecasting and management rather than a single, uniform assumption for conversion and timing.
+Improving pipeline hygiene, deal progression discipline, and segmentation quality represents a near-term opportunity to increase forecast accuracy and unlock additional value without requiring increased top-of-funnel volume.
+- The primary risks to revenue performance are:
+    -  inflated pipeline value due to aged or stalled opportunities
+    - incomplete or inconsistent data reducing visibility into deal quality and progression
+
+This analysis informs the forecasting approach described in the [Forecast Design](#forecast-design) section.
+
+## Forecast Design
+
+### Objective
+
+The goal of the forecasting model is to estimate probability-weighted expected revenue from the current open pipeline over a 90-day horizon. The forecast is designed to reflect both historical conversion performance and the current condition of each opportunity, with results segmented by deal size and region.
+
+---
+
+### Forecast Outputs
+
+The model produces:
+
+- Total expected revenue over the next 90 days  
+- Expected revenue segmented by deal size and region  
+- Pipeline value at risk due to aging or stalled opportunities  
+
+These outputs are designed to support leadership decision-making by providing both a headline forecast and visibility into where revenue risk is concentrated.
+
+---
+
+### Key Drivers of Deal Outcomes
+
+Based on pipeline analysis, the most important drivers of deal conversion include:
+
+- Deal size segment  
+- Deal age relative to expected sales cycle  
+- Pipeline health (active vs stale vs unknown)  
+- Regional differences in pipeline quality and data completeness  
+
+---
+
+### Probability Framework
+
+Each opportunity is assigned an adjusted probability of closing based on:
+
+> **Adjusted Probability = Base Win Rate × Age Multiplier**
+
+- Base win rate is determined by historical conversion performance within each deal-size segment  
+- Age multiplier adjusts probability based on how far a deal has progressed relative to expected sales cycle timing  
+
+This approach reflects the observation that open pipeline behavior differs significantly from closed deal performance.
+
+---
+
+### Deal Age Segmentation
+
+Opportunities are classified based on deal age:
+
+- **Healthy:** ≤ 60 days  
+- **Slightly Aged:** 61–120 days  
+- **Aging:** 121–200 days  
+- **Stale:** > 200 days  
+- **Unknown:** Missing deal age  
+
+This segmentation is designed to reflect increasing risk as deals exceed the typical ~48-day sales cycle.
+
+---
+
+### Age-Based Probability Adjustments
+
+Each age bucket is assigned a multiplier:
+
+- **Healthy:** 1.0  
+- **Slightly Aged:** 0.85  
+- **Aging:** 0.65  
+- **Stale:** 0.35  
+- **Unknown:** 0.5  
+
+These multipliers represent decreasing confidence in deal conversion as opportunities age or lack sufficient data.
+
+---
+
+### Forecast Calculation
+
+At the deal level:
+
+> **Expected Revenue = Estimated Deal Value × Adjusted Close Probability**
+
+Where:
+
+> **Adjusted Close Probability = Base Win Rate × Age Multiplier**
+
+This produces a probability-weighted estimate of revenue that accounts for both historical performance and current pipeline conditions.
+
+---
+
+### Key Assumptions
+
+- Historical win rates are a reasonable baseline for future conversion  
+- Deal age is a strong indicator of likelihood to close  
+- Aging and stale opportunities are less likely to convert within the forecast horizon  
+- Missing or incomplete data reduces forecast confidence  
+- Forecast accuracy improves with segmentation by deal size and region  
