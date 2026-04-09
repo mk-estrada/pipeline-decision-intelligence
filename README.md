@@ -242,3 +242,40 @@ This produces a probability-weighted estimate of revenue that accounts for both 
 - Aging and stale opportunities are less likely to convert within the forecast horizon  
 - Missing or incomplete data reduces forecast confidence  
 - Forecast accuracy improves with segmentation by deal size and region  
+
+## Forecast Findings
+
+The forecasting model reveals a significant gap between headline pipeline value and realistically expected near-term revenue.
+
+- While the open pipeline totals approximately **$3.3M**, the probability-weighted forecast estimates only **~$1.2M** in expected revenue over the next 90 days, reflecting a ~60% reduction after adjusting for deal age and pipeline quality.
+
+- Approximately **90% of open opportunities are classified as at risk**, driven by aging deals, stalled progression, or missing data. This indicates that pipeline risk is widespread rather than isolated.
+
+- **Pipeline risk is highly concentrated in aging, stale, and unknown opportunities**, which together account for nearly the entire pipeline value. These segments drive the majority of forecast uncertainty and revenue discounting.
+
+- **Medium-sized deals emerge as the most forecast-efficient segment**, with the highest expected-revenue-to-pipeline ratio, while **large deals are the least predictable**, reinforcing the need for differentiated forecasting approaches by deal size.
+
+- Regional analysis highlights distinct risk profiles:
+  - **West** carries the largest pipeline but the lowest forecast efficiency, with a high concentration of stale opportunities.
+  - **Central** shows the highest forecast ratio but is **100% at risk**, driven by a mix of unknown and aging deals, indicating low confidence due to data gaps and delayed progression.
+  - **East** appears more balanced, with moderate forecast efficiency and lower overall exposure.
+
+Overall, the model demonstrates that **raw pipeline value is not a reliable proxy for expected revenue**, and that incorporating deal condition, segmentation, and data quality provides a more realistic and actionable forecast.
+
+These findings are derived from the forecasting approach described in the [Forecast Design](#forecast-design) section.
+
+## ML Findings (Lightweight Enhancement)
+
+To complement the rule-based forecast, a lightweight logistic regression model was trained on historical closed opportunities using deal size, region, product, and deal age.
+
+The model achieved an ROC AUC of **0.729**, indicating that historical opportunity features provide meaningful signal for distinguishing won from lost deals. Its value was strongest as a **probability-ranking tool** rather than a strict binary classifier.
+
+Key findings from the model include:
+
+- **Unknown deal size** was a strongly negative signal, reinforcing the importance of complete segmentation and CRM discipline.
+- **Deal size** carried meaningful predictive value, supporting the use of segmented forecasting assumptions rather than one uniform win-rate assumption.
+- **Product mix** appeared to matter significantly, with some product lines associated with stronger close outcomes than others.
+- **Region** had a comparatively smaller effect in the historical win/loss model, suggesting that geography may matter more for current pipeline quality than for baseline close probability.
+- **Deal age** behaved differently in the ML model than in the rule-based forecast, highlighting the difference between completed sales-cycle duration and aging in the current open pipeline.
+
+Overall, the ML model served as a lightweight, interpretable enhancement that helped identify the historical drivers of close probability and provided a useful complement to the rule-based forecasting framework.
