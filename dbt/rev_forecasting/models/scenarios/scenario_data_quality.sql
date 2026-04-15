@@ -39,8 +39,13 @@ unknown_candidates as (
         count(*) over () as total_unknown_candidates
     from baseline_open
     where estimated_deal_size_band = 'unknown'
+      and (
+            estimated_deal_value is null
+            or sales_price is null
+          )
 
 ),
+-- Treat 50% of unknown deals; within treated set, assign 80% to small and 20% to medium
 unknown_treated as (
 
     select
@@ -101,7 +106,43 @@ deal_size_win_rate as (
     from {{ ref('mart_pipeline_by_deal_size') }}
 
 ),
---scenario_win_rate_by_size ()
--- base win rate size
-select *
-from scenario_data_quality
+scenario_win_rate_by_size as (
+    
+    select 
+        sdq.*,
+
+        coalesce(dsw.deal_size_win_rate, owr.overall_win_rate) as scenario_base_win_rate_by_size
+
+
+    from scenario_data_quality as sdq
+    left join deal_size_win_rate as dsw
+        on sdq.scenario_estimated_deal_size_band = dsw.estimated_deal_size_band
+    cross join overall_win_rate as owr
+),
+
+scenario_with_adjusted_probability as (
+
+    select
+        *,
+        scenario_base_win_rate_by_size * age_multiplier as scenario_adjusted_close_probability
+    from scenario_win_rate_by_size
+
+),
+
+final_scenario as (
+    select 
+        *,
+        scenario_estimated_deal_value * scenario_adjusted_close_probability as scenario_expected_revenue_90d
+
+        
+    from scenario_with_adjusted_probability
+)
+select 
+    'data_quality' as scenario_name,
+    sum(expected_revenue_90d) as baseline_expected_revenue,
+    sum(scenario_expected_revenue_90d) as scenario_expected_revenue,
+    sum(scenario_expected_revenue_90d) - sum(expected_revenue_90d) as revenue_delta,
+    (sum(scenario_expected_revenue_90d) - sum(expected_revenue_90d))
+        / nullif(sum(expected_revenue_90d), 0) as pct_change,
+    sum(was_treated) as affected_opportunity_count
+from final_scenario
