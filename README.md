@@ -6,276 +6,222 @@ This project simulates a decision intelligence system designed to improve revenu
 
 Rather than focusing only on predictive modeling, the project evaluates the operational drivers of pipeline performance and provides actionable recommendations to improve forecast reliability.
 
-### Executive Summary: Pipeline Performance
-
-The pipeline is currently weighted toward historical activity, with approximately 80% of opportunities already closed and only 20% remaining open. Despite this, conversion performance is strong, with a win rate of ~63%, indicating an effective sales motion once deals reach closure.
-
-From a value perspective, the pipeline is driven primarily by high-volume, lower-value deals, with limited contribution from large opportunities. To date, the business has generated approximately $1M in won revenue, while the current open pipeline represents ~$3.3M in potential value. If historical conversion rates hold, this suggests an additional ~$2M in expected revenue, effectively doubling realized performance.
-
-However, there is a notable disconnect between sales velocity and pipeline aging. While closed deals move efficiently, with an average cycle time of ~50 days, open opportunities have an average age of nearly 200 days. This gap suggests a portion of the pipeline may be stalled or lower quality, representing an opportunity for improved pipeline management, qualification, or prioritization.
-
 ## Business Problem
 
-Organizations often struggle to forecast revenue accurately due to inconsistent pipeline progression and limited visibility into deal conversion patterns.
+Revenue forecasting is critical for sales and finance leadership, but pipeline data is often incomplete, inconsistent, and difficult to interpret. 
 
-This project explores how analytics can help leadership understand pipeline health and anticipate expected revenue outcomes.
+Leaders need to understand not just expected revenue, but:
+- where the pipeline is strong or weak
+- which deals are at risk
+- what actions can improve outcomes
+
+Traditional reporting surfaces metrics but does not support decision-making.
 
 ## Project Objectives
 
-• Assess pipeline health and conversion performance  
-• Identify operational drivers of forecast volatility  
-• Develop predictive revenue forecasts  
-• Provide actionable recommendations based on scenario analysis  
+Build an end-to-end decision intelligence system that:
+- transforms raw CRM pipeline data into analysis-ready datasets
+- generates a 90-day expected revenue forecast
+- identifies pipeline risks and performance drivers
+- evaluates business scenarios to support decision-making 
 
-## Analytical Workflow
+## Key Outcomes
 
-1. Data ingestion and validation
-2. Exploratory analysis of pipeline performance
-3. Feature engineering reflecting sales process dynamics
-4. Predictive modeling and forecast generation
-5. Scenario analysis and recommendations
+- Built a 90-day expected revenue forecasting model
+- Identified pipeline aging and data quality as primary risk drivers
+- Developed scenario analysis to simulate business interventions
+- Quantified impact of key actions:
+  - Pipeline aging reduction: **+12% expected revenue**
+  - Data quality improvement: **+10.3% expected revenue**
+  - Product mix optimization: **+0.3% expected revenue**
 
-## Repository Structure
-data/              raw and processed datasets
-notebooks/         exploratory analysis
-src/               data pipelines and analytics logic
-sql/               analytical SQL queries
-outputs/           charts, tables, model outputs
-deliverables/      executive memo and stakeholder materials
-dashboard/         visualization components
+## End-to-End Analytical Workflow
 
+1. Data ingestion and cleaning (Python)
+2. Data validation and profiling
+3. Warehouse modeling (Snowflake + dbt)
+4. Analytical marts for pipeline performance
+5. Revenue forecasting model (rule-based)
+6. ML model for diagnostic insights (logistic regression)
+7. Scenario analysis for decision support
 
-## Data Pipeline: Ingestion, Profiling, and Validation
+## Decision Intelligence System Architecture
+This architecture illustrates the end-to-end flow from raw CRM opportunity data through warehouse transformation, forecasting logic, scenario simulation, and executive decision-support outputs.
 
-This project follows a structured data pipeline approach to ensure data is reliable and decision-ready before modeling and analysis.
+<p align="center">
+  <img src="images/decision_intelligence_architecture.png" alt="Decision Intelligence System Architecture" width="1200">
+</p>
 
-### 1. Ingestion (Local Python)
+## Tech Stack
 
-Raw CSV files are ingested and standardized into a clean intermediate layer.
-
-Key steps:
-- Standardize column names to snake_case
-- Normalize null values (e.g., "", "NA", "null")
-- Trim whitespace from string fields
-- Coerce numeric and date fields to appropriate types
-- Output cleaned datasets to `data/interim/`
-
-This establishes a reproducible and consistent foundation for downstream processing.
-
----
-
-### 2. Data Profiling
-
-Each dataset is profiled to understand structure, quality, and modeling readiness.
-
-Outputs:
-- Row and column counts
-- Null counts and percentages
-- Unique value counts
-- Identification of potential keys and join fields
-- Table-level interpretation and modeling implications
-
-Profiling results are written to:
-`outputs/validation/validation_summary.md`
+- SQL (Snowflake)
+- dbt (data modeling)
+- Python (pandas, scikit-learn)
+- Git / GitHub
 
 
-This ensures that:
-- key identifiers are reliable
-- critical fields meet expectations
-- data is trustworthy for modeling and decision-making
+## Data Architecture & Models
 
----
+Data is structured using a layered dbt approach:
 
-### Summary
+- **Staging:** cleaned source data  
+- **Intermediate:** enriched opportunity-level model  
+- **Marts:** decision-ready analytics and KPIs  
 
-This layered approach ensures that data is:
-- Clean (ingestion)
-- Understood (profiling)
-- Trusted (validation)
+Key models include:
+- `int_sales_pipeline_enriched` — canonical opportunity dataset  
+- `mart_pipeline_summary` — executive KPI layer  
+- `fct_pipeline_forecast` — deal-level expected revenue 
 
-before being used in downstream analytics, forecasting, and decision intelligence.
-
-This design mirrors modern analytics engineering practices, where data quality is enforced early in the pipeline before transformation and modeling.
-
-## RAW tables
-accounts.csv -> accounts_raw
-products.csv -> products_raw
-sales_pipeline.csv -> sales_pipeline_raw
-sales_teams.csv -> sales_teams_raw
-
-## Technology Stack
-
-Python (pandas) 
-SQL  
-Snowflake  
-dbt  
-scikit-learn  
-Plotly / dashboards
-
-
-## Data Architecture
-
-staging → intermediate → marts
-
-- staging: cleaned source data
-- intermediate: enriched opportunity-level model
-- marts: decision-ready metrics and analytics
-
-## Key Models
-
-### int_sales_pipeline_enriched
-Canonical opportunity-level dataset with lifecycle, timing, and enrichment fields.
-
-### mart_pipeline_summary
-Executive KPI layer summarizing pipeline performance, conversion, value, and velocity.
-
-## Key Metrics
-
-- Win Rate = Won / Closed Opportunities
-- Estimated Open Pipeline Value = proxy using sales price and available deal values
-- Avg Sales Cycle = avg days from engage to close (closed deals)
-- Avg Open Deal Age = age of open deals as of dataset analysis date
-
-## Executive Summary (Pipeline)
-- The pipeline reflects strong historical performance (≈60%+ win rate, ~48-day sales cycle), but current pipeline quality is materially weaker, with over $1.3M in aged or stalled opportunities and average open deal age (~198 days) far exceeding typical cycle times.
-- As a result, headline pipeline value likely overstates near-term revenue potential, since a significant portion of open opportunities may not be actively progressing or realistically convertible.
-- Pipeline risk is driven less by conversion performance and more by pipeline quality and data integrity, with over half of open opportunities classified as stale or unknown and gaps in key deal-level fields limiting visibility.
-- These risks are not evenly distributed—they are concentrated in specific regions (e.g., West aging, Central data gaps) and segments (e.g., small deal volume, large deal unpredictability), indicating that targeted interventions will be more effective than broad process changes.
-- The pipeline reflects distinct commercial motions across deal sizes, requiring a segmented approach to forecasting and management rather than a single, uniform assumption for conversion and timing.
-Improving pipeline hygiene, deal progression discipline, and segmentation quality represents a near-term opportunity to increase forecast accuracy and unlock additional value without requiring increased top-of-funnel volume.
-- The primary risks to revenue performance are:
-    -  inflated pipeline value due to aged or stalled opportunities
-    - incomplete or inconsistent data reducing visibility into deal quality and progression
-
-This analysis informs the forecasting approach described in the [Forecast Design](#forecast-design) section.
 
 ## Forecast Design
 
-### Objective
+The model estimates probability-weighted expected revenue over a 90-day horizon.
 
-The goal of the forecasting model is to estimate probability-weighted expected revenue from the current open pipeline over a 90-day horizon. The forecast is designed to reflect both historical conversion performance and the current condition of each opportunity, with results segmented by deal size and region.
+**Core formula:**
 
----
+> Expected Revenue = Estimated Deal Value × Adjusted Close Probability  
+> Adjusted Close Probability = Base Win Rate × Age Multiplier
 
-### Forecast Outputs
+- Base win rate is segmented by deal size  
+- Age multiplier adjusts probability based on deal aging  
 
-The model produces:
+**Deal age buckets:**
+- Healthy: ≤ 60 days  
+- Slightly Aged: 61–120 days  
+- Aging: 121–200 days  
+- Stale: > 200 days  
+- Unknown: missing age  
 
-- Total expected revenue over the next 90 days  
-- Expected revenue segmented by deal size and region  
-- Pipeline value at risk due to aging or stalled opportunities  
+**Age multipliers:**
+- Healthy: 1.0  
+- Slightly Aged: 0.85  
+- Aging: 0.65  
+- Stale: 0.35  
+- Unknown: 0.5  
 
-These outputs are designed to support leadership decision-making by providing both a headline forecast and visibility into where revenue risk is concentrated.
-
----
-
-### Key Drivers of Deal Outcomes
-
-Based on pipeline analysis, the most important drivers of deal conversion include:
-
-- Deal size segment  
-- Deal age relative to expected sales cycle  
-- Pipeline health (active vs stale vs unknown)  
-- Regional differences in pipeline quality and data completeness  
-
----
-
-### Probability Framework
-
-Each opportunity is assigned an adjusted probability of closing based on:
-
-> **Adjusted Probability = Base Win Rate × Age Multiplier**
-
-- Base win rate is determined by historical conversion performance within each deal-size segment  
-- Age multiplier adjusts probability based on how far a deal has progressed relative to expected sales cycle timing  
-
-This approach reflects the observation that open pipeline behavior differs significantly from closed deal performance.
-
----
-
-### Deal Age Segmentation
-
-Opportunities are classified based on deal age:
-
-- **Healthy:** ≤ 60 days  
-- **Slightly Aged:** 61–120 days  
-- **Aging:** 121–200 days  
-- **Stale:** > 200 days  
-- **Unknown:** Missing deal age  
-
-This segmentation is designed to reflect increasing risk as deals exceed the typical ~48-day sales cycle.
-
----
-
-### Age-Based Probability Adjustments
-
-Each age bucket is assigned a multiplier:
-
-- **Healthy:** 1.0  
-- **Slightly Aged:** 0.85  
-- **Aging:** 0.65  
-- **Stale:** 0.35  
-- **Unknown:** 0.5  
-
-These multipliers represent decreasing confidence in deal conversion as opportunities age or lack sufficient data.
-
----
-
-### Forecast Calculation
-
-At the deal level:
-
-> **Expected Revenue = Estimated Deal Value × Adjusted Close Probability**
-
-Where:
-
-> **Adjusted Close Probability = Base Win Rate × Age Multiplier**
-
-This produces a probability-weighted estimate of revenue that accounts for both historical performance and current pipeline conditions.
-
----
-
-### Key Assumptions
-
-- Historical win rates are a reasonable baseline for future conversion  
-- Deal age is a strong indicator of likelihood to close  
-- Aging and stale opportunities are less likely to convert within the forecast horizon  
-- Missing or incomplete data reduces forecast confidence  
-- Forecast accuracy improves with segmentation by deal size and region  
 
 ## Forecast Findings
 
-The forecasting model reveals a significant gap between headline pipeline value and realistically expected near-term revenue.
+The model reveals a significant gap between headline pipeline value and realistic near-term revenue.
 
-- While the open pipeline totals approximately **$3.3M**, the probability-weighted forecast estimates only **~$1.2M** in expected revenue over the next 90 days, reflecting a ~60% reduction after adjusting for deal age and pipeline quality.
+- Open pipeline totals **~$3.3M**, but expected 90-day revenue is only **~$1.2M**, reflecting a ~60% reduction after adjusting for deal age and quality.
+- Approximately **90% of open opportunities are at risk**, driven by aging, stalled progression, or missing data.
+- Pipeline risk is heavily concentrated in **aging, stale, and unknown opportunities**, which account for most forecast uncertainty.
+- **Medium deals are the most efficient**, while **large deals are least predictable**, supporting segmented forecasting.
+- Regional differences highlight concentrated risk:
+  - **West:** large pipeline, low efficiency
+  - **Central:** high forecast ratio but low confidence
+  - **East:** more balanced profile
 
-- Approximately **90% of open opportunities are classified as at risk**, driven by aging deals, stalled progression, or missing data. This indicates that pipeline risk is widespread rather than isolated.
-
-- **Pipeline risk is highly concentrated in aging, stale, and unknown opportunities**, which together account for nearly the entire pipeline value. These segments drive the majority of forecast uncertainty and revenue discounting.
-
-- **Medium-sized deals emerge as the most forecast-efficient segment**, with the highest expected-revenue-to-pipeline ratio, while **large deals are the least predictable**, reinforcing the need for differentiated forecasting approaches by deal size.
-
-- Regional analysis highlights distinct risk profiles:
-  - **West** carries the largest pipeline but the lowest forecast efficiency, with a high concentration of stale opportunities.
-  - **Central** shows the highest forecast ratio but is **100% at risk**, driven by a mix of unknown and aging deals, indicating low confidence due to data gaps and delayed progression.
-  - **East** appears more balanced, with moderate forecast efficiency and lower overall exposure.
-
-Overall, the model demonstrates that **raw pipeline value is not a reliable proxy for expected revenue**, and that incorporating deal condition, segmentation, and data quality provides a more realistic and actionable forecast.
+Overall, raw pipeline value significantly overstates expected revenue without accounting for deal condition and data quality.
 
 These findings are derived from the forecasting approach described in the [Forecast Design](#forecast-design) section.
 
 ## ML Findings (Lightweight Enhancement)
 
-To complement the rule-based forecast, a lightweight logistic regression model was trained on historical closed opportunities using deal size, region, product, and deal age.
+A logistic regression model was trained on historical closed opportunities using deal size, region, product, and deal age.
 
-The model achieved an ROC AUC of **0.729**, indicating that historical opportunity features provide meaningful signal for distinguishing won from lost deals. Its value was strongest as a **probability-ranking tool** rather than a strict binary classifier.
+- ROC AUC: **0.729**, indicating meaningful predictive signal
+- Most valuable as a **probability-ranking tool**
 
-Key findings from the model include:
+Key findings:
+- **Unknown deal size** is strongly negative, reinforcing data quality importance
+- **Deal size** supports segmented forecasting assumptions
+- **Product mix** influences close outcomes
+- **Region** has smaller impact on baseline probability
+- **Deal age behaves differently** in historical vs open pipeline contexts
 
-- **Unknown deal size** was a strongly negative signal, reinforcing the importance of complete segmentation and CRM discipline.
-- **Deal size** carried meaningful predictive value, supporting the use of segmented forecasting assumptions rather than one uniform win-rate assumption.
-- **Product mix** appeared to matter significantly, with some product lines associated with stronger close outcomes than others.
-- **Region** had a comparatively smaller effect in the historical win/loss model, suggesting that geography may matter more for current pipeline quality than for baseline close probability.
-- **Deal age** behaved differently in the ML model than in the rule-based forecast, highlighting the difference between completed sales-cycle duration and aging in the current open pipeline.
 
-Overall, the ML model served as a lightweight, interpretable enhancement that helped identify the historical drivers of close probability and provided a useful complement to the rule-based forecasting framework.
+## Scenario Analysis — Revenue Forecasting System
+
+## Overview
+
+To move from forecasting to decision support, I simulated three realistic business scenarios to evaluate how different operational and strategic levers impact expected 90-day revenue.
+
+Each scenario modifies a targeted subset of the open pipeline and measures the resulting change in expected revenue.
+
+---
+
+## Scenario 1 — Pipeline Data Quality Improvement
+
+**What was tested:**  
+Improving pipeline completeness by reclassifying 50% of unknown-size opportunities with missing or incomplete value fields into realistic size bands (80% small, 20% medium), and imputing segment-based deal values.
+
+**Result:**
+- **+$124K expected revenue**
+- **+10.3% increase**
+- **166 opportunities affected**
+
+**Interpretation:**  
+Improving pipeline data quality reveals hidden forecast value and materially improves the usefulness of the forecast. Incomplete deal classification can mask meaningful revenue potential.
+
+---
+
+## Scenario 2 — Pipeline Velocity Improvement (Aging)
+
+**What was tested:**  
+Simulating earlier intervention on 50% of aging and stale opportunities (`deal_age_days > 120`) by reducing effective deal age by 30%.
+
+**Result:**
+- **+$140K expected revenue**
+- **+12% increase**
+- **688 opportunities affected**
+
+**Interpretation:**  
+Pipeline aging is a high-leverage operational driver. Proactive management of stalled opportunities can significantly improve near-term revenue outcomes.
+
+---
+
+## Scenario 3 — Product Mix Optimization
+
+**What was tested:**  
+Reassigning 15% of selected lower-performing product opportunities (MG Advanced, GTX Plus Basic) to a higher-performing product (GTXPro), holding other factors constant.
+
+**Result:**
+- **+$3.8K expected revenue**
+- **+0.3% increase**
+- **99 opportunities affected**
+
+**Interpretation:**  
+Within the current pipeline, product mix has a relatively small impact on near-term expected revenue compared to operational and data-quality improvements.
+
+---
+
+## Key Insights & Recommendations
+
+### 1. Pipeline execution is the highest-leverage lever
+Improving pipeline velocity (reducing aging) produced the largest modeled impact, suggesting that sales execution and earlier intervention are the most effective near-term actions.
+
+### 2. Data quality materially impacts forecast usefulness
+Correcting incomplete or unknown deal classifications significantly increases expected revenue and improves the reliability of the forecast as a decision-making tool.
+
+### 3. Product strategy is a secondary optimization lever
+While product mix influences outcomes, its impact in this analysis is modest relative to execution and data quality, indicating it is a longer-term strategic lever rather than a primary near-term driver.
+
+---
+
+##  Final Takeaway
+
+> Scenario analysis shows that the most impactful opportunities for improving forecasted revenue are operational and data-quality focused. Leadership should prioritize pipeline hygiene and data completeness before pursuing product mix optimization.
+
+## Repository Structure
+
+- `data/` – raw and processed datasets  
+- `src/` – Python pipelines and ML models  
+- `models/` – dbt models (staging, marts, forecast, scenarios)  
+- `outputs/` – analysis outputs and profiling  
+- `deliverables/` – executive summary and findings  
+
+## Next Steps
+
+- Integrate real-time CRM updates and trigger-based alerts to identify aging, at-risk, or incomplete opportunities and enable proactive intervention  
+
+- Extend the analysis toward causal inference to better understand the impact of pipeline interventions (e.g., reducing deal age or improving data quality) on conversion outcomes  
+
+- Enhance the ML layer with tree-based models and probability calibration to improve ranking and accuracy of deal-level predictions  
+
+- Develop a lightweight application or dashboard to support interactive exploration of pipeline health, forecast outputs, and scenario analysis  
+
+- Explore LLM-based summarization to generate automated, executive-ready insights from pipeline and scenario outputs  
+
