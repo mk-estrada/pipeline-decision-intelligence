@@ -48,9 +48,7 @@ Build an end-to-end decision intelligence system that:
 ## Decision Intelligence System Architecture
 This architecture illustrates the end-to-end flow from raw CRM opportunity data through warehouse transformation, forecasting logic, scenario simulation, and executive decision-support outputs.
 
-<p align="center">
-  <img src="images/decision_intelligence_architecture.png" alt="Decision Intelligence System Architecture" width="1200">
-</p>
+![Decision Intelligence System Architecture](images/decision_intelligence_architecture.png)
 
 ## Tech Stack
 
