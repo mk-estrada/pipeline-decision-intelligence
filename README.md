@@ -15,7 +15,7 @@ Leaders need to understand not just expected revenue, but:
 - which deals are at risk
 - what actions can improve outcomes
 
-Traditional reporting surfaces metrics but does not support decision-making.
+Traditional reporting surfaces metrics, but does not support decision-making.
 
 ## Project Objectives
 
@@ -98,6 +98,16 @@ The model estimates probability-weighted expected revenue over a 90-day horizon.
 - Stale: 0.35  
 - Unknown: 0.5  
 
+## Revenue Forecast Bridge
+
+The chart below illustrates how raw open pipeline value is reduced through baseline win probability and pipeline aging adjustments to arrive at realistic expected 90-day revenue.
+
+![Revenue Forecast Bridge](images/forecast_bridge.png)
+
+Key observations:
+- Raw open pipeline value (~$3.3M) significantly overstates realistic near-term revenue expectations.
+- Baseline win probability and pipeline aging reduce expected 90-day revenue to approximately $1.2M.
+- Pipeline aging represents a major source of forecast degradation and operational risk.
 
 ## Forecast Findings
 
@@ -115,6 +125,17 @@ The model reveals a significant gap between headline pipeline value and realisti
 Overall, raw pipeline value significantly overstates expected revenue without accounting for deal condition and data quality.
 
 These findings are derived from the forecasting approach described in the [Forecast Design](#forecast-design) section.
+
+## Pipeline Risk Distribution
+
+The distribution below highlights the concentration of aging and stale opportunities within the open pipeline. These aging segments represent the largest source of forecast degradation and operational risk.
+
+![Pipeline Risk Distribution](images/pipeline_risk_distribution.png)
+
+Key observations:
+- A substantial portion of the open pipeline falls into aging or stale categories.
+- Aging opportunities contribute disproportionately to forecast uncertainty and reduced close probability.
+- Pipeline velocity and earlier intervention represent the highest-leverage operational improvements.
 
 ## ML Findings (Lightweight Enhancement)
 
@@ -184,6 +205,8 @@ Reassigning 15% of selected lower-performing product opportunities (MG Advanced,
 **Interpretation:**  
 Within the current pipeline, product mix has a relatively small impact on near-term expected revenue compared to operational and data-quality improvements.
 
+
+![Scenario Comparison](images/scenario_comparison.png)
 ---
 
 ## Key Insights & Recommendations
@@ -198,6 +221,11 @@ Correcting incomplete or unknown deal classifications significantly increases ex
 While product mix influences outcomes, its impact in this analysis is modest relative to execution and data quality, indicating it is a longer-term strategic lever rather than a primary near-term driver.
 
 ---
+
+## Assumptions & Limitations Section
+- Forecast probabilities are based on historical segment win rates and heuristic aging adjustments rather than causal or time-series forecasting methods. 
+
+- 
 
 ##  Final Takeaway
 
