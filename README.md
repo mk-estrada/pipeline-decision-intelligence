@@ -35,7 +35,7 @@ Build an end-to-end decision intelligence system that:
   - Data quality improvement: **+10.3% expected revenue**
   - Product mix optimization: **+0.3% expected revenue**
 
-## End-to-End Analytical Workflow
+## End-to-End Decision Intelligence Workflow
 
 1. Data ingestion and cleaning (Python)
 2. Data validation and profiling
@@ -54,7 +54,7 @@ This architecture illustrates the end-to-end flow from raw CRM opportunity data 
 
 - SQL (Snowflake)
 - dbt (data modeling)
-- Python (pandas, scikit-learn)
+- Python (pandas, scikit-learn, plotly)
 - Git / GitHub
 
 
@@ -152,7 +152,7 @@ Key findings:
 - **Deal age behaves differently** in historical vs open pipeline contexts
 
 
-## Scenario Analysis — Revenue Forecasting System
+## Scenario Analysis
 
 ## Overview
 
@@ -160,7 +160,6 @@ To move from forecasting to decision support, I simulated three realistic busine
 
 Each scenario modifies a targeted subset of the open pipeline and measures the resulting change in expected revenue.
 
----
 
 ## Scenario 1 — Pipeline Data Quality Improvement
 
@@ -175,7 +174,6 @@ Improving pipeline completeness by reclassifying 50% of unknown-size opportuniti
 **Interpretation:**  
 Improving pipeline data quality reveals hidden forecast value and materially improves the usefulness of the forecast. Incomplete deal classification can mask meaningful revenue potential.
 
----
 
 ## Scenario 2 — Pipeline Velocity Improvement (Aging)
 
@@ -190,7 +188,6 @@ Simulating earlier intervention on 50% of aging and stale opportunities (`deal_a
 **Interpretation:**  
 Pipeline aging is a high-leverage operational driver. Proactive management of stalled opportunities can significantly improve near-term revenue outcomes.
 
----
 
 ## Scenario 3 — Product Mix Optimization
 
@@ -207,7 +204,12 @@ Within the current pipeline, product mix has a relatively small impact on near-t
 
 
 ![Scenario Comparison](images/scenario_comparison.png)
----
+
+Key observations:
+- Pipeline execution and aging reduction produced the largest modeled forecast improvement.
+- Data quality improvements generated meaningful revenue lift and improved forecast reliability.
+- Product mix optimization produced comparatively smaller short-term impact.
+- Operational interventions appear to offer substantially higher near-term leverage than strategic product shifts.
 
 ## Key Insights & Recommendations
 
@@ -220,16 +222,39 @@ Correcting incomplete or unknown deal classifications significantly increases ex
 ### 3. Product strategy is a secondary optimization lever
 While product mix influences outcomes, its impact in this analysis is modest relative to execution and data quality, indicating it is a longer-term strategic lever rather than a primary near-term driver.
 
----
+## Recommended Actions
 
-## Assumptions & Limitations Section
-- Forecast probabilities are based on historical segment win rates and heuristic aging adjustments rather than causal or time-series forecasting methods. 
+| Priority | Recommended Action | Expected Impact |
+|---|---|---|
+| High | Reduce aging opportunities >120 days | Largest modeled revenue lift |
+| High | Improve unknown deal size classification | Improved forecast reliability |
+| Medium | Implement pipeline intervention alerts | Earlier risk detection |
+| Medium | Conduct large-deal pipeline reviews | Reduced forecast volatility |
+| Lower | Optimize product mix strategy | Smaller near-term revenue impact |
 
-- 
+## Assumptions & Limitations
+
+- Forecast probabilities are based on historical segment win rates and heuristic aging adjustments rather than causal or time-series forecasting methods.
+
+- Scenario analyses simulate operational interventions independently and do not account for interaction effects between pipeline execution, product strategy, and market conditions.
+
+- The project prioritizes interpretability and operational explainability over maximizing predictive accuracy.
+
+- Open pipeline behavior may differ from historical closed-opportunity patterns used in the diagnostic ML analysis.
+
+- Forecast outputs are intended to support operational decision-making and prioritization rather than serve as formal financial guidance.
+
+## Business Implications
+
+The analysis suggests that operational execution and pipeline hygiene represent higher-leverage opportunities than strategic product optimization in the near term.
+
+Organizations with aging or incomplete pipelines may systematically overestimate forecast reliability unless pipeline health and intervention workflows are actively managed.
+
+The project also demonstrates how relatively simple forecasting logic, when combined with operational diagnostics and scenario analysis, can support executive decision-making more effectively than static reporting alone.
 
 ##  Final Takeaway
 
-> Scenario analysis shows that the most impactful opportunities for improving forecasted revenue are operational and data-quality focused. Leadership should prioritize pipeline hygiene and data completeness before pursuing product mix optimization.
+Scenario analysis shows that the most impactful opportunities for improving forecasted revenue are operational and data-quality focused. Leadership should prioritize pipeline hygiene and data completeness before pursuing product mix optimization.
 
 ## Repository Structure
 
