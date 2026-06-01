@@ -8,3 +8,4 @@ dbt-core
 dbt-snowflake
 plotly
 kaleido
+streamlit

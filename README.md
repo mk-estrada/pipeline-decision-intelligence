@@ -1,5 +1,10 @@
 # Decision Intelligence System for Revenue Forecasting
 
+<!-- ## Live Demonstration
+
+🎥 Loom Walkthrough: [Watch the Project Demo](LOOM_LINK)
+🚀 Streamlit Application: [Launch App](...) -->
+
 ## Executive Summary
 
 This project simulates a decision intelligence system designed to improve revenue forecasting and pipeline visibility using CRM opportunity data.
@@ -52,10 +57,12 @@ This architecture illustrates the end-to-end flow from raw CRM opportunity data 
 
 ## Tech Stack
 
-- SQL (Snowflake)
-- dbt (data modeling)
 - Python (pandas, scikit-learn, plotly)
-- Git / GitHub
+- SQL (Snowflake)
+- Snowflake (warehouse)
+- dbt (data modeling)
+- Git / GitHub 
+- Streamlit
 
 
 ## Data Architecture & Models
@@ -67,7 +74,7 @@ Data is structured using a layered dbt approach:
 - **Marts:** decision-ready analytics and KPIs  
 
 Key models include:
-- `int_sales_pipeline_enriched` — canonical opportunity dataset  
+- `int_sales_pipeline_enriched` — opportunity dataset  
 - `mart_pipeline_summary` — executive KPI layer  
 - `fct_pipeline_forecast` — deal-level expected revenue 
 
@@ -83,6 +90,12 @@ The model estimates probability-weighted expected revenue over a 90-day horizon.
 
 - Base win rate is segmented by deal size  
 - Age multiplier adjusts probability based on deal aging  
+
+**Deal Sizes:**
+- Small: < 5,000
+- Medium: < 20,000 
+- Larg: > 20,000  
+- Unknown: missing close value amount 
 
 **Deal age buckets:**
 - Healthy: ≤ 60 days  
@@ -153,8 +166,6 @@ Key findings:
 
 
 ## Scenario Analysis
-
-## Overview
 
 To move from forecasting to decision support, I simulated three realistic business scenarios to evaluate how different operational and strategic levers impact expected 90-day revenue.
 
@@ -232,6 +243,32 @@ While product mix influences outcomes, its impact in this analysis is modest rel
 | Medium | Conduct large-deal pipeline reviews | Reduced forecast volatility |
 | Lower | Optimize product mix strategy | Smaller near-term revenue impact |
 
+## Streamlit Application
+
+The Streamlit application provides an executive-facing interface for exploring forecast performance, pipeline risk, and scenario impacts.
+
+### Executive Overview
+
+![Executive Overview](images/executive_overview.png)
+
+The Executive Overview summarizes forecast performance, pipeline health, and recommended actions.
+
+### Pipeline Risk Explorer
+
+![Pipeline Risk Explorer](images/pipeline_risk_explorer1.png)
+
+Interactive filters allow leaders to evaluate forecast risk by aging, region, and deal size.
+
+![Pipeline Risk Explorer](images/pipeline_risk_explorer2.png)
+
+
+### Scenario Simulator
+
+![Scenario Simulator](images/scenario_simulator.png)
+
+The Scenario Simulator allows leadership to evaluate the expected impact of operational interventions and compare potential revenue improvements against the baseline forecast.
+
+
 ## Assumptions & Limitations
 
 - Forecast probabilities are based on historical segment win rates and heuristic aging adjustments rather than causal or time-series forecasting methods.
@@ -262,7 +299,7 @@ Scenario analysis shows that the most impactful opportunities for improving fore
 - `src/` – Python pipelines and ML models  
 - `models/` – dbt models (staging, marts, forecast, scenarios)  
 - `outputs/` – analysis outputs and profiling  
-- `deliverables/` – executive summary and findings  
+- `deliverables/` – executive memo  
 
 ## Next Steps
 
