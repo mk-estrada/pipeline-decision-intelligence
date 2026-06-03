@@ -9,3 +9,4 @@ dbt-snowflake
 plotly
 kaleido
 streamlit
+scikit-learn

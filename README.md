@@ -94,7 +94,7 @@ The model estimates probability-weighted expected revenue over a 90-day horizon.
 **Deal Sizes:**
 - Small: < 5,000
 - Medium: < 20,000 
-- Larg: > 20,000  
+- Large: > 20,000  
 - Unknown: missing close value amount 
 
 **Deal age buckets:**
@@ -308,8 +308,7 @@ Scenario analysis shows that the most impactful opportunities for improving fore
 - Extend the analysis toward causal inference to better understand the impact of pipeline interventions (e.g., reducing deal age or improving data quality) on conversion outcomes  
 
 - Enhance the ML layer with tree-based models and probability calibration to improve ranking and accuracy of deal-level predictions  
-
-- Develop a lightweight application or dashboard to support interactive exploration of pipeline health, forecast outputs, and scenario analysis  
+ 
 
 - Explore LLM-based summarization to generate automated, executive-ready insights from pipeline and scenario outputs  
 

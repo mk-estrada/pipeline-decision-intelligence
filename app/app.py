@@ -56,44 +56,74 @@ if page == "Executive Overview":
         """
     )
 
-    #st.info("This page will show executive KPIs, forecast health, and recommended actions.")
-
+    
     
     # TEMPORARY DATA CHECK
     if data is not None:
-
-        #st.write(data["forecast"].columns.tolist())
-
+  
+        # KPI cards
+        st.markdown("**PIPELINE SUMMARY**")
         metrics = calculate_executive_metrics(data["forecast"])
 
-        col1, col2, col3, col4, col5 = st.columns(5)
+        cols = st.columns(5)
+        kpis = [
+                ("Open pipeline",    format_currency(metrics["open_pipeline"]),    False),
+                ("Expected revenue", format_currency(metrics["expected_revenue"]), False),
+                ("Forecast ratio",   format_percent(metrics["forecast_ratio"]),   False),
+                ("At-risk revenue",  format_currency(metrics["at_risk_revenue"]),  True),
+                ("Stale pipeline",   format_percent(metrics["stale_pipeline_pct"]),   True),
+            ]
 
-        col1.metric("Open Pipeline", format_currency(metrics["open_pipeline"]))
-        col2.metric("Expected Revenue", format_currency(metrics["expected_revenue"]))
-        col3.metric("Forecast Ratio", format_percent(metrics["forecast_ratio"]))
-        col4.metric("At-Risk Revenue", format_currency(metrics["at_risk_revenue"]))
-        col5.metric("Stale Pipeline", format_percent(metrics["stale_pipeline_pct"]))
+        for col, (label, value, is_risk) in zip(cols, kpis):
+            with col:
+                if is_risk:
+                    st.markdown(
+                f"""<div style="background:#FCEBEB;border-radius:8px;padding:14px 16px;">
+                        <p style="font-size:14px;color:#791F1F;margin:0 0 4px;">{label}</p>
+                        <p style="font-size:24px;font-weight:500;color:#A32D2D;margin:0;">{value}</p>
+                        </div>""",
+                        unsafe_allow_html=True,
+                    )
+                else:
+                    st.markdown(
+                f"""<div style="background:#eeee;border-radius:8px;padding:14px 16px;">
+                        <p style="font-size:14px;color:#000;margin:0 0 4px;">{label}</p>
+                        <p style="font-size:24px;font-weight:500;color:#000;margin:0;">{value}</p>
+                        </div>""",
+                        unsafe_allow_html=True,
+                    )
+        st.divider()
 
-    st.divider()
+        # Action cards
+        st.markdown("**RECOMMENDED ACTIONS**")
 
-    st.subheader("Recommended Actions")
-
-    rec1, rec2, rec3 = st.columns(3)
-
-    with rec1:
-        st.markdown("### 1. Reduce Aging Pipeline")
-        st.write("Prioritize opportunities older than 120 days.")
-        st.metric("Estimated Impact", "+12%")
-
-    with rec2:
-        st.markdown("### 2. Improve Data Quality")
-        st.write("Classify missing deal-size values to improve forecast confidence.")
-        st.metric("Estimated Impact", "+10.3%")
-
-    with rec3:
-        st.markdown("### 3. Defer Product Mix Optimization")
-        st.write("Lower near-term upside compared with aging and data quality actions.")
-        st.metric("Estimated Impact", "+0.3%")
+        cols = st.columns(3)
+        pill_styles = {
+            "high": ("background:#EAF3DE;color:#3B6D11", "↑"),
+            "med":  ("background:#E6F1FB;color:#185FA5", "↑"),
+            "low":  ("background:#F1EFE8;color:#5F5E5A", "–"),
+        }
+        
+        actions=[
+        {"title": "Reduce aging pipeline",          "desc": "Prioritize opportunities older than 120 days.",                          "impact": "+12%",   "priority": "high"},
+        {"title": "Improve data quality",            "desc": "Classify missing deal-size values to improve forecast confidence.",      "impact": "+10.3%", "priority": "med"},
+        {"title": "Defer product mix optimization",  "desc": "Lower near-term upside vs aging and data quality actions.",             "impact": "+0.3%",  "priority": "low"},
+        ]
+        
+        for i, (col, action) in enumerate(zip(cols, actions), 1):
+            style, arrow = pill_styles[action["priority"]]
+            with col:
+                st.markdown(
+                    f"""<div style="border:0.5px solid #ddd;border-radius:12px;padding:1rem 1.25rem;height:100%;">
+                    <p style="font-size:15px;color:#888;margin:0 0 6px;letter-spacing:.04em;">PRIORITY {i}</p>
+                    <p style="font-size:20px;font-weight:500;margin:0 0 6px;">{action["title"]}</p>
+                    <p style="font-size:15px;color:#666;margin:0 0 12px;">{action["desc"]}</p>
+                    <span style="font-size:13px;font-weight:500;padding:3px 10px;border-radius:99px;{style}">
+                    {arrow} {action["impact"]} forecast lift
+                    </span>
+                    </div>""",
+                    unsafe_allow_html=True,
+                )
 
 # -----------------------------
 # Page 2: Pipeline Risk Explorer
@@ -108,7 +138,6 @@ elif page == "Pipeline Risk Explorer":
         """
     )
 
-    #st.info("This page will show aging distribution, regional risk, and deal-size risk.")
     if data is not None:
         forecast_df = data["forecast"].copy()
 
@@ -210,6 +239,23 @@ elif page == "Scenario Simulator":
             step=5,
         )
 
+        # Dynamic slider label
+        slider_descriptions = {
+            "Pipeline Aging Reduction": (
+                f"At {intensity_pct}% intensity, "
+                f"**{intensity_pct}% of aging deals (>120 days)** are assumed to be re-engaged or closed out."
+            ),
+            "Data Quality Improvement": (
+                f"At {intensity_pct}% intensity, "
+                f"**{intensity_pct}% of deals with missing size values** are assumed to be classified."
+            ),
+            "Product Mix Optimization": (
+                f"At {intensity_pct}% intensity, "
+                f"**{intensity_pct}% of low-performing deals** are assumed to be shifted to higher-value products."
+            ),
+        }
+        st.caption(slider_descriptions[scenario_name])
+
         scenario_results = calculate_independent_scenario(
             baseline_expected_revenue=baseline_expected_revenue,
             scenario_name=scenario_name,
@@ -217,30 +263,36 @@ elif page == "Scenario Simulator":
         )
 
         st.divider()
-
         st.subheader("Scenario Impact")
 
-        col1, col2, col3 = st.columns(3)
+        
+        impact = [
+                ("Baseline Expected Revenue", format_currency(baseline_expected_revenue), None, False),
+                ("Scenario Expected Revenue", format_currency(scenario_results["scenario_expected_revenue"]), format_currency(scenario_results["revenue_delta"]), True),
+                ("Forecast Lift", format_percent(scenario_results["lift_pct"]), None, False ),
+            ]
 
-        with col1:
-            st.metric(
-                "Baseline Expected Revenue",
-                format_currency(baseline_expected_revenue),
-            )
+        cols = st.columns(3)
+        for col, (label, value, delta, is_highlight) in zip(cols, impact):
+            with col:
+                delta_html = (
+                    f'<p style="font-size:14px;font-weight:500;color:#3B6D11;'
+                    f'background:#EAF3DE;display:inline-block;padding:2px 10px;'
+                    f'border-radius:99px;margin:6px 0 0;">↑ {delta}</p>'
+                    if delta else '<p style="margin:6px 0 0;min-height:24px;"></p>'
+                )
+                st.markdown(
+                    f"""<div style="background:#eeee;border-radius:8px;
+                    padding:14px 16px;border:0.5px solid rgba(0,0,0,0.1);
+                    min-height:110px;">
+                    <p style="font-size:13px;color:#666;margin:0 0 4px;">{label}</p>
+                    <p style="font-size:24px;font-weight:500;margin:0;">{value}</p>
+                    {delta_html}
+                    </div>""",
+                    unsafe_allow_html=True,
+                )
 
-        with col2:
-            st.metric(
-                "Scenario Expected Revenue",
-                format_currency(scenario_results["scenario_expected_revenue"]),
-                delta=format_currency(scenario_results["revenue_delta"]),
-            )
-
-        with col3:
-            st.metric(
-                "Forecast Lift",
-                format_percent(scenario_results["lift_pct"]),
-            )
-
+        
         st.divider()
 
         st.subheader("Interpretation")
