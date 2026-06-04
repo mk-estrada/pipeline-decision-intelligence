@@ -1,9 +1,9 @@
 # Decision Intelligence System for Revenue Forecasting
 
-<!-- ## Live Demonstration
+## Live Demonstration
 
-🎥 Loom Walkthrough: [Watch the Project Demo](LOOM_LINK)
-🚀 Streamlit Application: [Launch App](...) -->
+🎥 Loom Walkthrough: [Watch the Project Demo](https://www.loom.com/share/c1146d460c5b4e46abc3818c06a9f0e7)
+🚀 Streamlit Application: [Launch App](https://pipeline-decision-intelligence-vdsjg45bappnchzmh86shyb.streamlit.app/)
 
 ## Executive Summary
 
@@ -302,8 +302,7 @@ Scenario analysis shows that the most impactful opportunities for improving fore
 - `deliverables/` – executive memo  
 
 ## Next Steps
-
-- Integrate real-time CRM updates and trigger-based alerts to identify aging, at-risk, or incomplete opportunities and enable proactive intervention  
+  
 
 - Extend the analysis toward causal inference to better understand the impact of pipeline interventions (e.g., reducing deal age or improving data quality) on conversion outcomes  
 

@@ -24,16 +24,10 @@ def main():
 
     print("Connecting to Snowflake...")
     conn = get_connection()
-
-    #print("Database:", os.getenv("SNOWFLAKE_DATABASE"))
-    #print("Requested schema: ANALYTICS")
     
     df = load_ml_dataset(conn)
 
     df.columns = df.columns.str.lower()
-
-    #print("Shape:", df.shape)
-    #print(df.head())
 
 
     feature_cols = [
