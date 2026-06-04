@@ -56,9 +56,6 @@ if page == "Executive Overview":
         """
     )
 
-    
-    
-    # TEMPORARY DATA CHECK
     if data is not None:
   
         # KPI cards
@@ -86,7 +83,7 @@ if page == "Executive Overview":
                     )
                 else:
                     st.markdown(
-                f"""<div style="background:#eeee;border-radius:8px;padding:14px 16px;">
+                f"""<div style="background:#eeeeee;border-radius:8px;padding:14px 16px;">
                         <p style="font-size:14px;color:#000;margin:0 0 4px;">{label}</p>
                         <p style="font-size:24px;font-weight:500;color:#000;margin:0;">{value}</p>
                         </div>""",
@@ -282,7 +279,7 @@ elif page == "Scenario Simulator":
                     if delta else '<p style="margin:6px 0 0;min-height:24px;"></p>'
                 )
                 st.markdown(
-                    f"""<div style="background:#eeee;border-radius:8px;
+                    f"""<div style="background:#eeeeee;border-radius:8px;
                     padding:14px 16px;border:0.5px solid rgba(0,0,0,0.1);
                     min-height:110px;">
                     <p style="font-size:13px;color:#666;margin:0 0 4px;">{label}</p>
