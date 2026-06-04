@@ -2,8 +2,8 @@
 
 ## Live Demonstration
 
-🎥 Loom Walkthrough: [Watch the Project Demo](https://www.loom.com/share/c1146d460c5b4e46abc3818c06a9f0e7)
-🚀 Streamlit Application: [Launch App](https://pipeline-decision-intelligence-vdsjg45bappnchzmh86shyb.streamlit.app/)
+🎥 Loom Walkthrough: <a href="https://www.loom.com/share/c1146d460c5b4e46abc3818c06a9f0e7" target="_blank">[ Watch the Project Demo ]</a><br />
+🚀 Streamlit Application: <a href="https://pipeline-decision-intelligence-vdsjg45bappnchzmh86shyb.streamlit.app/">[  Launch App ]</a>
 
 ## Executive Summary
 
